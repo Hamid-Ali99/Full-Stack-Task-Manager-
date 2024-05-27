@@ -1,6 +1,24 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  faBarsProgress,
+  faDashboard,
+  faLayerGroup,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+interface MenuItem {
+  name: string;
+  icon: any;
+  isSelected: boolean;
+}
 
 interface GlobalContext {
   isDark: boolean;
@@ -12,6 +30,10 @@ interface GlobalContext {
   mobileView: {
     isMobileView: boolean;
     setIsMobileView: (isMobileView: boolean) => void;
+  };
+  dashboardItems: {
+    menuItems: MenuItem[];
+    setMenuItems: Dispatch<SetStateAction<MenuItem[]>>;
   };
 }
 
@@ -26,12 +48,22 @@ const GlobalContext = createContext<GlobalContext>({
     isMobileView: false,
     setIsMobileView: () => {},
   },
+  dashboardItems: {
+    menuItems: [],
+    setMenuItems: () => {},
+  },
 });
 
 function GlobalContextProvider({ children }: { children: React.ReactNode }) {
   const [isDark, setIsDark] = useState<boolean>(false);
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
   const [isMobileView, setIsMobileView] = useState<boolean>(false);
+
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([
+    { name: "Dashboard", icon: faDashboard, isSelected: true },
+    { name: "Projects", icon: faBarsProgress, isSelected: false },
+    { name: "Categories", icon: faLayerGroup, isSelected: false },
+  ]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -54,6 +86,7 @@ function GlobalContextProvider({ children }: { children: React.ReactNode }) {
         setIsDark,
         sideBar: { openSideBar, setOpenSideBar },
         mobileView: { isMobileView, setIsMobileView },
+        dashboardItems: { menuItems, setMenuItems },
       }}
     >
       {children}

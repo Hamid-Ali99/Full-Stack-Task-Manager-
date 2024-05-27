@@ -3,10 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import {
   faArrowRightFromBracket,
-  faBarsProgress,
-  faDashboard,
   faFeather,
-  faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DarkMode from "./DarkMode";
@@ -17,10 +14,12 @@ interface menuItems {
   isSelected: boolean;
 }
 const Sidebar = () => {
-  const { isDark, sideBar, mobileView } = useGlobalContextProvider();
+  const { isDark, sideBar, mobileView, dashboardItems } =
+    useGlobalContextProvider();
   const { openSideBar, setOpenSideBar } = sideBar;
   const { isMobileView } = mobileView;
   const sideBarRef = useRef<HTMLDivElement>(null);
+  const { menuItems, setMenuItems } = dashboardItems;
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,12 +45,6 @@ const Sidebar = () => {
   }, [openSideBar]);
 
   console.log(openSideBar);
-
-  const [menuItems, setMenuItems] = useState([
-    { name: "Dashboard", icon: faDashboard, isSelected: true },
-    { name: "Projects", icon: faBarsProgress, isSelected: false },
-    { name: "Categories", icon: faLayerGroup, isSelected: false },
-  ]);
 
   function updateItemSelection(IndexItem: number) {
     const copyMenuItems = menuItems.map((singleMenuItem, index) => {
