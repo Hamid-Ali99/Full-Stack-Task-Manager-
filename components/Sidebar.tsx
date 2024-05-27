@@ -1,8 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
-  faArrowRight,
   faArrowRightFromBracket,
   faBarsProgress,
   faDashboard,
@@ -18,7 +17,35 @@ interface menuItems {
   isSelected: boolean;
 }
 const Sidebar = () => {
-  const { isDark, setIsDark } = useGlobalContextProvider();
+  const { isDark, sideBar, mobileView } = useGlobalContextProvider();
+  const { openSideBar, setOpenSideBar } = sideBar;
+  const { isMobileView } = mobileView;
+  const sideBarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setOpenSideBar(false);
+    };
+
+    const handleOutSideClick = () => {
+      if (
+        sideBarRef.current &&
+        !sideBarRef.current.contains(event?.target as Node)
+      ) {
+        setOpenSideBar(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("click", handleOutSideClick);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("click", handleOutSideClick);
+    };
+  }, [openSideBar]);
+
+  console.log(openSideBar);
 
   const [menuItems, setMenuItems] = useState([
     { name: "Dashboard", icon: faDashboard, isSelected: true },
@@ -39,7 +66,14 @@ const Sidebar = () => {
   }
 
   return (
-    <div className="poppins border border-gray-300 w-[300px] p-6 py-16 flex flex-col gap-3 justify-between">
+    <div
+      ref={sideBarRef}
+      className={` ${
+        openSideBar ? "flex absolute h-full w-[280px]" : "flex"
+      } poppins z-10 shadow-lg flex flex-col gap-32 w-[330px] p-8 pt-12  ${
+        isDark ? "bg-blackColorDark" : "bg-white"
+      } ${isMobileView ? (!openSideBar ? "hidden" : "flex") : ""}`}
+    >
       {/* logo */}
       <div className="flex gap-2 items-center">
         <FontAwesomeIcon

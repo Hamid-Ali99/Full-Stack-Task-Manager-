@@ -15,6 +15,8 @@ const config: Config = {
       },
       colors: {
         mainColor: "rgb(62, 99, 255)",
+        blackColor: "rgb(24, 31, 57)",
+        blackColorDark: "rgb(17, 27, 68)",
       },
     },
   },
