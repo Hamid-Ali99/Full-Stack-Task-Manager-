@@ -5,7 +5,7 @@ import React from "react";
 
 const DarkMode = () => {
   const { isDark, setIsDark } = useGlobalContextProvider();
-  console.log(isDark);
+  // console.log(isDark);
 
   return (
     <div>

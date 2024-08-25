@@ -22,11 +22,15 @@ const Sidebar = () => {
   const { menuItems, setMenuItems } = dashboardItems;
 
   useEffect(() => {
+    console.log("Sidebar state openSideBar:", openSideBar);
+  }, [openSideBar]);
+
+  useEffect(() => {
     const handleResize = () => {
       setOpenSideBar(false);
     };
 
-    const handleOutSideClick = () => {
+    const handleOutSideClick = (event: MouseEvent) => {
       if (
         sideBarRef.current &&
         !sideBarRef.current.contains(event?.target as Node)
@@ -36,15 +40,15 @@ const Sidebar = () => {
     };
 
     window.addEventListener("resize", handleResize);
-    window.addEventListener("click", handleOutSideClick);
+    document.addEventListener("click", handleOutSideClick);
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("click", handleOutSideClick);
+      document.removeEventListener("click", handleOutSideClick);
     };
-  }, [openSideBar]);
+  });
 
-  console.log(openSideBar);
+  // console.log(openSideBar);
 
   function updateItemSelection(IndexItem: number) {
     const copyMenuItems = menuItems.map((singleMenuItem, index) => {
