@@ -1,7 +1,8 @@
-import { useGlobalContextProvider } from "@/utils/contextAPI";
+import React, { useEffect, useState } from "react";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+
+import { useGlobalContextProvider } from "@/utils/contextAPI";
 
 const CategoriesArea = () => {
   const { isDark } = useGlobalContextProvider();
@@ -34,7 +35,23 @@ const CategoriesArea = () => {
 };
 
 const Categorycard = () => {
-  const { isDark } = useGlobalContextProvider();
+  const { isDark, dropDown } = useGlobalContextProvider();
+  const { openDropDown, setOpenDropDown, setDropDownPosition } = dropDown;
+
+  const handleClickedThreeDots = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (event) {
+      event.stopPropagation();
+    }
+
+    const xPosition = event.clientX;
+    const yPosition = event.clientY;
+
+    setDropDownPosition({ x: xPosition, y: yPosition });
+    setOpenDropDown(true);
+  };
+
   return (
     <div
       className={`${
@@ -45,7 +62,10 @@ const Categorycard = () => {
         <span className="font-semibold">Category 1</span>
         <span className="text-[12px] text-gray-400">2 Projects</span>
       </div>
-      <div className="flex gap-4 hover:bg-gray-200 h-6 w-6 items-center justify-center rounded-full">
+      <div
+        onClick={(e) => handleClickedThreeDots(e)}
+        className="flex gap-4 hover:bg-gray-200 h-6 w-6 items-center justify-center rounded-full"
+      >
         <FontAwesomeIcon
           icon={faEllipsis}
           height={15}

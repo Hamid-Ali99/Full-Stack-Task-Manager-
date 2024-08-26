@@ -1,11 +1,11 @@
-import { useGlobalContextProvider } from "@/utils/contextAPI";
 import {
   faBarsProgress,
   faEllipsis,
   faProjectDiagram,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+
+import { useGlobalContextProvider } from "@/utils/contextAPI";
 
 const ProjectsArea = () => {
   const { isDark } = useGlobalContextProvider();
@@ -30,7 +30,22 @@ const ProjectsArea = () => {
 export default ProjectsArea;
 
 const ProjectCard = () => {
-  const { isDark } = useGlobalContextProvider();
+  const { isDark, dropDown } = useGlobalContextProvider();
+  const { setOpenDropDown, setDropDownPosition } = dropDown;
+
+  const handleOpenDropDown = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (event) {
+      event.stopPropagation();
+    }
+
+    const xPosition = event.clientX;
+    const yPosition = event.clientY;
+
+    setOpenDropDown(true);
+    setDropDownPosition({ x: xPosition, y: yPosition });
+  };
   return (
     <div
       className={`${
@@ -38,7 +53,10 @@ const ProjectCard = () => {
       } w-full py-5 rounded-md p-4 text-sm flex flex-col gap-6 relative`}
     >
       {/* Three dots icon */}
-      <div className="absolute right-3 text-center cursor-pointer p-1 rounded-full h-6 w-6 hover:bg-gray-200 transition-all">
+      <div
+        onClick={(e) => handleOpenDropDown(e)}
+        className="absolute right-3 text-center cursor-pointer p-1 rounded-full h-6 w-6 hover:bg-gray-200 transition-all"
+      >
         <FontAwesomeIcon
           icon={faEllipsis}
           className="text-gray-500"

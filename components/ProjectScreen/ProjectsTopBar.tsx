@@ -1,11 +1,16 @@
-import { useGlobalContextProvider } from "@/utils/contextAPI";
 import { faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { useGlobalContextProvider } from "@/utils/contextAPI";
+
 const ProjectsTopBar = () => {
-  const { sideBar, mobileView, isDark } = useGlobalContextProvider();
+  const { sideBar, mobileView, isDark, projectWindow } =
+    useGlobalContextProvider();
   const { openSideBar, setOpenSideBar } = sideBar;
   const { isMobileView } = mobileView;
+  const { openNewProjectBox, setOpenNewProjectBox } = projectWindow;
+
+  console.log(openNewProjectBox);
 
   return (
     <div
@@ -19,7 +24,10 @@ const ProjectsTopBar = () => {
           <span className="font-bold text-2xl">Projects</span>
           <p className="font-light text-[12px]">3 Projects</p>
         </span>
-        <button className="text-[12px] bg-mainColor flex items-center gap-1 p-2 px-4 text-white rounded-md">
+        <button
+          onClick={() => setOpenNewProjectBox(true)}
+          className="text-[12px] bg-mainColor flex items-center gap-1 p-2 px-4 text-white rounded-md"
+        >
           <FontAwesomeIcon
             icon={faPlus}
             className="font-bold"
